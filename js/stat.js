@@ -47,12 +47,16 @@ var renderCloudMessage = function (ctx, x, y, message) {
 
 var getMaxElement = function (arr) {
   var maxElement = arr[0];
-  for (var i = 0; i < arr.length; i++) {
+  for (var i = 1; i < arr.length; i++) {
     if (arr[i] > maxElement) {
       maxElement = arr[i];
     }
   }
   return maxElement;
+};
+
+var getRandomSaturation = function (hls) {
+  return hls.replace('random', Math.round(100 * Math.random()));
 };
 
 window.renderStatistics = function (ctx, players, times) {
@@ -75,7 +79,7 @@ window.renderStatistics = function (ctx, players, times) {
     if (players[i] === 'Вы') {
       ctx.fillStyle = BAR_COLOR_YOU;
     } else {
-      ctx.fillStyle = BAR_COLOR_PLAYERS.replace('random', Math.round(100 * Math.random()));
+      ctx.fillStyle = getRandomSaturation(BAR_COLOR_PLAYERS);
     }
     ctx.fillRect(x, y - 10, BAR_WIDTH, -barHeight);
 
