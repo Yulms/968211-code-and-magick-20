@@ -43,6 +43,10 @@ var FIREBALL_COLORS = [
   '#e848d5',
   '#e6e848'
 ];
+var KeyCodes = {
+  ENTER: 13,
+  ESCAPE: 27
+};
 
 
 var similarListElement = document.querySelector('.setup-similar-list');
@@ -128,36 +132,32 @@ var onPopupOpen = function () {
 };
 
 var onSetupButtonEnterPress = function (evt) {
-  if (evt.key === 'Enter') {
+  if (evt.keyCode === KeyCodes.ENTER) {
     onPopupOpen();
   }
 };
 
 var onSetupEscPress = function (evt) {
-  if (evt.key === 'Escape' && evt.target !== userNameInputElement) {
+  if (evt.keyCode === KeyCodes.ESCAPE && evt.target !== userNameInputElement) {
     onPopupClose();
   }
 };
 
 var onSetupCloseEnterPress = function (evt) {
-  if (evt.key === 'Enter') {
+  if (evt.keyCode === KeyCodes.ENTER) {
     onPopupClose();
   }
 };
 
 var onInputFormSend = function () {
-  switch (true) {
-    case (userNameInputElement.validity.tooShort):
-      userNameInputElement.setCustomValidity('Имя должно состоять минимум из 2-х символов');
-      break;
-    case (userNameInputElement.validity.tooLong):
-      userNameInputElement.setCustomValidity('Имя не должно превышать 25-ти символов');
-      break;
-    case (userNameInputElement.validity.valueMissing):
-      userNameInputElement.setCustomValidity('Обязательное поле');
-      break;
-    default:
-      userNameInputElement.setCustomValidity('');
+  if (userNameInputElement.validity.tooShort) {
+    userNameInputElement.setCustomValidity('Имя должно состоять минимум из 2-х символов');
+  } else if (userNameInputElement.validity.tooLong) {
+    userNameInputElement.setCustomValidity('Имя не должно превышать 25-ти символов');
+  } else if (userNameInputElement.validity.valueMissing) {
+    userNameInputElement.setCustomValidity('Обязательное поле');
+  } else {
+    userNameInputElement.setCustomValidity('');
   }
 };
 
