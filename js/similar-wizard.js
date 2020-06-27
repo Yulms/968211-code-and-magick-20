@@ -21,7 +21,12 @@
     similarListElement.append(fragment);
   };
 
+  var removeAllSimilarWizards = function () {
+    similarListElement.innerHTML = '';
+  };
+
   window.similarWizards = {
-    render: renderAllSimilarWizards
+    render: renderAllSimilarWizards,
+    remove: removeAllSimilarWizards
   };
 })();
