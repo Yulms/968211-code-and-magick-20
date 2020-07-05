@@ -69,6 +69,6 @@
   window.drag = {
     activate: activate,
     deActivate: deActivate
-
   };
+
 })();
