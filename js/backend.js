@@ -1,21 +1,28 @@
 'use strict';
 
 window.backend = (function () {
-  var URL = {
+  var Urls = {
     GET: 'https://javascript.pages.academy/code-and-magick/data',
     POST: 'https://javascript.pages.academy/code-and-magick/'
   };
-  var StatusCode = {
+  var StatusCodes = {
     OK: 200
   };
   var TIMEOUT_IN_MS = 10000;
+  var RequestMethods = {
+    GET: 'GET',
+    POST: 'POST'
+  };
+  var ResponseTypes = {
+    JSON: 'json'
+  };
 
 
   var createXhr = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === StatusCode.OK) {
+      if (xhr.status === StatusCodes.OK) {
         onLoad(xhr.response);
       } else {
         onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
@@ -30,7 +37,7 @@ window.backend = (function () {
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.responseType = 'json';
+    xhr.responseType = ResponseTypes.JSON;
     xhr.timeout = TIMEOUT_IN_MS;
 
     return xhr;
@@ -39,14 +46,14 @@ window.backend = (function () {
   var load = function (onLoad, onError) {
     var xhr = createXhr(onLoad, onError);
 
-    xhr.open('GET', URL.GET, true);
+    xhr.open(RequestMethods.GET, Urls.GET, true);
     xhr.send();
   };
 
   var save = function (data, onLoad, onError) {
     var xhr = createXhr(onLoad, onError);
 
-    xhr.open('POST', URL.POST);
+    xhr.open(RequestMethods.POST, Urls.POST);
     xhr.send(data);
   };
 
