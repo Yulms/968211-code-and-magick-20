@@ -25,9 +25,17 @@
     return arr[randomIndex];
   };
 
+  var showError = function (message) {
+    var node = document.createElement('div');
+    node.classList.add('error');
+    node.textContent = message;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
   window.util = {
     isEscPressEvent: isEscPressEvent,
     isEnterPressEvent: isEnterPressEvent,
-    getRandomArrayElement: getRandomArrayElement
+    getRandomArrayElement: getRandomArrayElement,
+    showError: showError
   };
 })();

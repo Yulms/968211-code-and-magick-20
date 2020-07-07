@@ -2,6 +2,7 @@
 
 (function () {
 
+
   var setupWindow = document.querySelector('.setup');
   var openSetupButton = document.querySelector('.setup-open');
   var closeSetupButton = setupWindow.querySelector('.setup-close');
@@ -12,6 +13,7 @@
   var wizardEyesHiddenElement = setupWindow.querySelector('[name=eyes-color]');
   var fireballWrapElement = setupWindow.querySelector('.setup-fireball-wrap');
   var uploadButton = setupWindow.querySelector('.upload');
+  var setupForm = setupWindow.querySelector('.setup-wizard-form');
 
   var onSetupButtonEnterPress = function (evt) {
     window.util.isEnterPressEvent(evt, openSetup);
@@ -65,10 +67,28 @@
     fireballWrapElement.querySelector('[name=fireball-color]').value = fireballColor;
   };
 
+  var onWizardsLoad = function (response) {
+    window.similarWizards.render(response);
+  };
+
+  var onWizardsLoadError = function (message) {
+    window.util.showError(message);
+  };
+
+  var onWizardsSaveError = function (message) {
+    window.util.showError(message);
+  };
+
+  var onSetupSubmit = function (evt) {
+    window.backend.save(new FormData(setupForm), closeSetup, onWizardsSaveError);
+    evt.preventDefault();
+  };
+
   var openSetup = function () {
     setupWindow.classList.remove('hidden');
 
-    window.similarWizards.render(window.data.createWizardsData());
+    window.backend.load(onWizardsLoad, onWizardsLoadError);
+
     document.querySelector('.setup-similar').classList.remove('hidden');
 
     closeSetupButton.addEventListener('click', onCloseSetupButtonClick);
@@ -80,7 +100,7 @@
     wizardCoatElement.addEventListener('click', onWizardCoatClick);
     wizardEyesElement.addEventListener('click', onWizardEyesClick);
     fireballWrapElement.addEventListener('click', onFireballWrapClick);
-
+    setupForm.addEventListener('submit', onSetupSubmit);
     window.drag.activate(uploadButton, setupWindow);
   };
 
@@ -98,13 +118,11 @@
     wizardCoatElement.removeEventListener('click', onWizardCoatClick);
     wizardEyesElement.removeEventListener('click', onWizardEyesClick);
     fireballWrapElement.removeEventListener('click', onFireballWrapClick);
-
-    window.drag.deActivate();
+    setupForm.removeEventListener('submit', onSetupSubmit);
+    window.drag.deactivate();
   };
-
 
   openSetupButton.addEventListener('click', onSetupButtonClick);
   openSetupButton.addEventListener('keydown', onSetupButtonEnterPress);
-
 
 })();

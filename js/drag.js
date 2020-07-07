@@ -62,13 +62,13 @@
     draggedElement = dragged;
   };
 
-  var deActivate = function () {
+  var deactivate = function () {
     handleElement.removeEventListener('mousedown', onPinMouseDown);
   };
 
   window.drag = {
     activate: activate,
-    deActivate: deActivate
-
+    deactivate: deactivate
   };
+
 })();
