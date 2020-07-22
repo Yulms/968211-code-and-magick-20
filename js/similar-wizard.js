@@ -1,10 +1,12 @@
 'use strict';
 
 (function () {
+
   var MAX_WIZARDS_NUMBER = 4;
 
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
   var similarListElement = document.querySelector('.setup-similar-list');
+
 
   var renderSimilarWizard = function (wizard) {
     var wizardElement = similarWizardTemplate.cloneNode(true);
@@ -16,6 +18,7 @@
   };
 
   var renderAllSimilarWizards = function (wizards) {
+    removeAllSimilarWizards();
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < MAX_WIZARDS_NUMBER; i++) {
       fragment.append(renderSimilarWizard(wizards[i]));
