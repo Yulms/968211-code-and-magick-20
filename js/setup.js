@@ -2,18 +2,13 @@
 
 (function () {
 
-
   var setupWindow = document.querySelector('.setup');
   var openSetupButton = document.querySelector('.setup-open');
   var closeSetupButton = setupWindow.querySelector('.setup-close');
   var userNameInputElement = setupWindow.querySelector('.setup-user-name');
-  var wizardCoatElement = setupWindow.querySelector('.wizard-coat');
-  var wizardCoatHiddenElement = setupWindow.querySelector('[name=coat-color]');
-  var wizardEyesElement = setupWindow.querySelector('.wizard-eyes');
-  var wizardEyesHiddenElement = setupWindow.querySelector('[name=eyes-color]');
-  var fireballWrapElement = setupWindow.querySelector('.setup-fireball-wrap');
   var uploadButton = setupWindow.querySelector('.upload');
   var setupForm = setupWindow.querySelector('.setup-wizard-form');
+  var lastSimilarWizardsServerData;
 
   var onSetupButtonEnterPress = function (evt) {
     window.util.isEnterPressEvent(evt, openSetup);
@@ -49,26 +44,14 @@
     }
   };
 
-  var onWizardCoatClick = function () {
-    var coatColor = window.color.getCoatColor();
-    wizardCoatElement.style.fill = coatColor;
-    wizardCoatHiddenElement.value = coatColor;
-  };
-
-  var onWizardEyesClick = function () {
-    var eyesColor = window.color.getEyesColor();
-    wizardEyesElement.style.fill = eyesColor;
-    wizardEyesHiddenElement.value = eyesColor;
-  };
-
-  var onFireballWrapClick = function () {
-    var fireballColor = window.color.getFireballColor();
-    fireballWrapElement.style.background = fireballColor;
-    fireballWrapElement.querySelector('[name=fireball-color]').value = fireballColor;
+  var showSimilarWizards = function () {
+    var sortedData = window.similarWizardsData.sortSimilarWizards(lastSimilarWizardsServerData);
+    window.similarWizards.render(sortedData);
   };
 
   var onWizardsLoad = function (response) {
-    window.similarWizards.render(response);
+    lastSimilarWizardsServerData = response;
+    showSimilarWizards();
   };
 
   var onWizardsLoadError = function (message) {
@@ -97,9 +80,7 @@
     closeSetupButton.addEventListener('keydown', onCloseSetupButtonEnterPress);
     openSetupButton.removeEventListener('click', onSetupButtonClick);
     openSetupButton.removeEventListener('keydown', onSetupButtonEnterPress);
-    wizardCoatElement.addEventListener('click', onWizardCoatClick);
-    wizardEyesElement.addEventListener('click', onWizardEyesClick);
-    fireballWrapElement.addEventListener('click', onFireballWrapClick);
+    window.wizard.addListeners();
     setupForm.addEventListener('submit', onSetupSubmit);
     window.drag.activate(uploadButton, setupWindow);
   };
@@ -115,11 +96,13 @@
     closeSetupButton.removeEventListener('keydown', onCloseSetupButtonEnterPress);
     openSetupButton.addEventListener('click', onSetupButtonClick);
     openSetupButton.addEventListener('keydown', onSetupButtonEnterPress);
-    wizardCoatElement.removeEventListener('click', onWizardCoatClick);
-    wizardEyesElement.removeEventListener('click', onWizardEyesClick);
-    fireballWrapElement.removeEventListener('click', onFireballWrapClick);
+    window.wizard.removeListeners();
     setupForm.removeEventListener('submit', onSetupSubmit);
     window.drag.deactivate();
+  };
+
+  window.setup = {
+    showSimilarWizards: showSimilarWizards
   };
 
   openSetupButton.addEventListener('click', onSetupButtonClick);
