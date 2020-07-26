@@ -8,6 +8,8 @@
   var userNameInputElement = setupWindow.querySelector('.setup-user-name');
   var uploadButton = setupWindow.querySelector('.upload');
   var setupForm = setupWindow.querySelector('.setup-wizard-form');
+  var imageInput = uploadButton.querySelector('input[name = avatar]');
+  var imagePreview = uploadButton.querySelector('.setup-user-pic');
   var lastSimilarWizardsServerData;
 
   var onSetupButtonEnterPress = function (evt) {
@@ -83,6 +85,8 @@
     window.wizard.addListeners();
     setupForm.addEventListener('submit', onSetupSubmit);
     window.drag.activate(uploadButton, setupWindow);
+
+    window.imageInjection.activate(imageInput, imagePreview);
   };
 
   var closeSetup = function () {
@@ -99,6 +103,8 @@
     window.wizard.removeListeners();
     setupForm.removeEventListener('submit', onSetupSubmit);
     window.drag.deactivate();
+
+    window.imageInjection.deactivate();
   };
 
   window.setup = {
